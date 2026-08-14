@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Fire Robot | Live Dashboard
+</title>
+
+<link
+rel="stylesheet"
+href="dashboard.css">
+</head>
+
+
+<body>
+
+<canvas id="emberCanvas"></canvas>
+
+<header>
+
+<div class="brand">
+
+<span class="flame-icon">🔥</span>
+
+<div class="brand-text">
+FIRE ROBOT
+<span>
+LIVE MONITORING SYSTEM
+</span>
+</div>
+
+</div>
+
+
+<div class="header-right">
+
+<div class="online">
+<span class="dot"></span>
+ROBOT ONLINE
+</div>
+
+<button
+onclick="logout()"
+class="logout">
+
+Logout
+
+</button>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- ALERT -->
+
+<div
+id="fireAlert"
+class="alert normal">
+
+✅ SYSTEM NORMAL — NO FIRE DETECTED
+
+</div>
+
+
+<!-- TOP CARDS -->
+
+<section class="stats">
+
+
+<div class="stat-card">
+
+<div class="icon">🔥</div>
+
+<div style="flex:1">
+
+<p>Fire Status</p>
+
+<h2 id="fireStatus">
+NO FIRE
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="icon">💨</div>
+
+<div style="flex:1">
+
+<p>Smoke Level</p>
+
+<h2 id="smokeLevel">
+NORMAL
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="icon">🌡️</div>
+
+<div style="flex:1">
+
+<p>Temperature</p>
+
+<h2 id="temperature">
+32°C
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="icon">🔋</div>
+
+<div style="flex:1">
+
+<p>Battery</p>
+
+<h2 id="battery">
+85%
+</h2>
+
+<div class="mini-bar">
+<div id="batteryBar" class="mini-bar-fill" style="width:85%"></div>
+</div>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+<!-- MAIN GRID -->
+
+<section class="main-grid">
+
+
+<!-- CAMERA -->
+
+<div class="card camera-card">
+
+<div class="card-header">
+
+<h2>📹 LIVE CAMERA</h2>
+
+<span class="live">
+<span class="dot" style="width:6px;height:6px;"></span>
+LIVE
+</span>
+
+</div>
+
+
+<div class="camera">
+
+<!-- ESP32-CAM URL -->
+
+<img
+id="cameraFeed"
+src="http://192.168.4.1"
+alt="Camera Feed">
+
+<div
+id="cameraOffline"
+class="camera-offline">
+
+📹 CAMERA OFFLINE
+<small>Waiting for ESP32-CAM stream...</small>
+
+</div>
+
+<div class="scanline"></div>
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+</div>
+
+</div>
+
+
+<!-- ROBOT STATUS -->
+
+<div class="card">
+
+<h2>🤖 ROBOT STATUS</h2>
+
+
+<div class="status-row">
+
+<span>Connection</span>
+
+<strong class="green">
+ONLINE
+</strong>
+
+</div>
+
+
+<div class="status-row">
+
+<span>Wi-Fi</span>
+
+<strong>
+Connected
+</strong>
+
+</div>
+
+
+<div class="status-row">
+
+<span>Signal</span>
+
+<span style="display:flex;align-items:center;">
+<strong id="wifi">
+-45 dBm
+</strong>
+<span class="signal-bars" id="signalBars">
+<span></span><span></span><span></span><span></span>
+</span>
+</span>
+
+</div>
+
+
+<div class="status-row">
+
+<span>Water Pump</span>
+
+<strong id="pumpStatus">
+OFF
+</strong>
+
+</div>
+
+
+<div class="status-row">
+
+<span>Last Update</span>
+
+<strong id="lastUpdate">
+Now
+</strong>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+<!-- SENSOR + CONTROL -->
+
+<section class="bottom-grid">
+
+
+<!-- SENSORS -->
+
+<div class="card">
+
+<h2>📊 SENSOR MONITORING</h2>
+
+
+<div class="sensor" id="flameRow">
+
+<span>🔥 Flame Sensor</span>
+
+<strong id="flameSensor" class="green">
+SAFE
+</strong>
+
+</div>
+
+
+<div class="sensor" id="smokeRow">
+
+<span>💨 Smoke Sensor</span>
+
+<strong id="smokeSensor" class="green">
+NORMAL
+</strong>
+
+</div>
+
+
+<div class="sensor">
+
+<span>🌡️ Temperature</span>
+
+<strong id="tempSensor">
+32°C
+</strong>
+
+</div>
+
+
+<div class="sensor">
+
+<span>💧 Water Pump</span>
+
+<strong id="waterStatus">
+OFF
+</strong>
+
+</div>
+
+
+<div class="chart-wrap">
+<p>Temperature Trend (last 20 readings)</p>
+<canvas id="tempChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- ROBOT CONTROL -->
+
+<div class="card control-card">
+
+<h2>🕹️ ROBOT CONTROL</h2>
+
+
+<div class="control">
+
+<button
+onclick="sendCommand('FORWARD')">
+
+⬆
+
+</button>
+
+</div>
+
+
+<div class="control">
+
+<button
+onclick="sendCommand('LEFT')">
+
+⬅
+
+</button>
+
+
+<button
+class="stop"
+onclick="sendCommand('STOP')">
+
+STOP
+
+</button>
+
+
+<button
+onclick="sendCommand('RIGHT')">
+
+➡
+
+</button>
+
+</div>
+
+
+<div class="control">
+
+<button
+onclick="sendCommand('BACKWARD')">
+
+⬇
+
+</button>
+
+</div>
+
+
+<div class="pump-controls">
+
+<button
+class="pump-on"
+onclick="pumpControl('ON')">
+
+💧 PUMP ON
+
+</button>
+
+
+<button
+class="pump-off"
+onclick="pumpControl('OFF')">
+
+PUMP OFF
+
+</button>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+<!-- EVENT LOG -->
+
+<section class="card event-card">
+
+<h2>📜 RECENT EVENTS</h2>
+
+<div id="eventLog">
+
+<div>
+[System] Robot connected successfully
+</div>
+
+<div>
+[System] Live monitoring started
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+Fire Fighting Robot Monitoring System
+|
+Real-Time Dashboard
+
+</footer>
+
+
+<script src="dashboard.js"></script>
+
+</body>
+
+</html>

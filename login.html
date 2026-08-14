@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Robot | Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+<canvas id="emberCanvas"></canvas>
+
+<div class="login-container">
+
+    <div class="login-card" id="loginCard">
+
+        <div class="logo-ring">
+            <div class="logo">
+                🔥
+            </div>
+        </div>
+
+        <h1>FIRE ROBOT</h1>
+
+        <p class="subtitle">
+            Fire Fighting Robot Monitoring System
+        </p>
+
+        <form id="loginForm">
+
+            <label>Username</label>
+
+            <div class="input-wrap">
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <label>Password</label>
+
+            <div class="input-wrap">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <div class="remember">
+                <input type="checkbox" id="remember">
+                <span>Remember Me</span>
+            </div>
+
+            <button type="submit" id="loginBtn">
+                LOGIN TO DASHBOARD
+            </button>
+
+            <p id="loginMessage"></p>
+
+        </form>
+
+        <div class="security">
+            🔒 Authorized Access Only
+        </div>
+
+    </div>
+
+</div>
+
+<script src="login.js"></script>
+
+</body>
+</html>

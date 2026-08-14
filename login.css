@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, #252525, #080808 60%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+#emberCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.login-container {
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-card {
+    max-width: 420px;
+    margin: auto;
+    padding: 40px;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(14px);
+    border: 1px solid #333;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+.logo-ring {
+    width: 90px;
+    height: 90px;
+    margin: auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-ring::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #e63946, #ff8c42, #e63946);
+    animation: spin 4s linear infinite;
+    filter: blur(1px);
+}
+
+.logo-ring::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #141414;
+}
+
+.logo {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    position: relative;
+    z-index: 1;
+    background: radial-gradient(circle at 35% 30%, #ff6a3d, #e63946 70%);
+    animation: pulseLogo 2.4s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulseLogo {
+    0%, 100% { box-shadow: 0 0 0 rgba(230, 57, 70, 0.5); }
+    50% { box-shadow: 0 0 24px rgba(230, 57, 70, 0.6); }
+}
+
+h1 {
+    text-align: center;
+    margin-top: 22px;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #999;
+    margin: 10px 0 30px;
+    font-size: 14px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-size: 13px;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    background: #111;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input:focus {
+    border-color: #e63946;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+}
+
+.remember {
+    display: flex;
+    gap: 8px;
+    margin: 15px 0;
+    color: #aaa;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(120deg, #e63946, #ff6a3d);
+    background-size: 200% 100%;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    transition: background-position 0.5s ease, transform 0.15s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-position: 100% 0;
+    box-shadow: 0 10px 24px rgba(230, 57, 70, 0.35);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button.loading {
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+#loginMessage {
+    text-align: center;
+    margin-top: 15px;
+    min-height: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.security {
+    text-align: center;
+    margin-top: 25px;
+    color: #777;
+    font-size: 13px;
+}
